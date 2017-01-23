@@ -10,41 +10,51 @@ for week in weeks:
     for p in players:
         try:
             # General info
-            playerList = []
-            playerList.append(p.player.player_id)
-            playerList.append(p.player.name)
-            playerList.append(p.team)
-            playerList.append(week)
-            playerList.append(p.home)
-            playerList.append(p.player.position)
+            playerInfo = []
+            playerInfo.append(p.player.player_id)
+            playerInfo.append(p.player.name)
+            playerInfo.append(p.team)
+            playerInfo.append(week)
+            playerInfo.append(p.home)
+            playerInfo.append(p.player.position)
 
             # Passing info
-            playerList.extend([p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds, p.twopta, p.twoptm])
+            playerPassing = []
+            playerPassing.extend([p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds,
+                                  p.twopta, p.twoptm])
 
             # Receiving info
-            playerList.extend([p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds, p.receiving_tds, p.twoptm])
+            playerReceiving = []
+            playerReceiving.extend([p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds,
+                                    p.receiving_tds, p.twoptm])
 
             # Rushing info
-            playerList.extend([p.rushing_att, p.rushing_yds, p.rushing_rac_yds, p.rushing_tds, p.twoptm])
+            playerRushing = []
+            playerRushing.extend([p.rushing_att, p.rushing_yds, p.rushing_rac_yds, p.rushing_tds, p.twoptm])
 
             # Misc. info
-            playerList.extend([p.fumbles_tot, p.fumbles_lost])
+            playerMisc = []
+            playerMisc.extend([p.fumbles_tot, p.fumbles_lost])
 
-            yearStatLine.append(playerList)
+            playerStatLine = [playerInfo, playerPassing, playerReceiving, playerRushing, playerMisc]
+            yearStatLine.append(playerStatLine)
 
-        except:
+        except AttributeError:
             # print p.name
             pass
 
 yearStatLine.sort()
-length = len(yearStatLine)
-
-for index in length:
-    if yearStatLine[index][0] == yearStatLine[index + 1][0]:
-        catList = yearStatLine[index] + yearStatLine[index + 1]
-
 
 print yearStatLine
+
+# length = len(yearStatLine)
+
+# for index in length:
+#     if yearStatLine[index][0] == yearStatLine[index + 1][0]:
+#         catList = yearStatLine[index] + yearStatLine[index + 1]
+#
+#
+# print yearStatLine
 
 
 
