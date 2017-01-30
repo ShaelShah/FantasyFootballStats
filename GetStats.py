@@ -1,82 +1,96 @@
 import nflgame
-import xml.etree.cElementTree as ET
-
-weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-yearStatLine = []
-
-for week in weeks:
-
-    print week
-
-    game = nflgame.games(2016, week)
-    players = nflgame.combine_play_stats(game)
-
-    for p in players:
-        try:
-            # General info
-            playerInfo = []
-            playerInfo.extend([p.player.player_id, p.player.name, p.team, p.player.position])
-
-            # Player Weekly Info
-            playerWeekInfo = []
-            playerWeekInfo.extend([week, p.home])
-
-            # Passing info
-            playerPassing = []
-            playerPassing.extend([p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds,
-                                  p.twopta, p.twoptm])
-
-            # Receiving info
-            playerReceiving = []
-            playerReceiving.extend([p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds,
-                                    p.receiving_tds, p.twoptm])
-
-            # Rushing info
-            playerRushing = []
-            playerRushing.extend([p.rushing_att, p.rushing_yds, p.rushing_rac_yds, p.rushing_tds, p.twoptm])
-
-            # Misc. info
-            playerMisc = []
-            playerMisc.extend([p.fumbles_tot, p.fumbles_lost])
-
-            playerStatLine = [playerInfo, playerWeekInfo, playerPassing, playerReceiving, playerRushing, playerMisc]
-            yearStatLine.append(playerStatLine)
-
-        except AttributeError:
-            print str("Could not find info for ") + p.name
-            pass
-
-yearStatLine.sort()
-for index in yearStatLine:
-    print index
-
-player = ET.Element("Player")
-id = ET.SubElement(player, "ID")
+import sys
 
 
-# print yearStatLine
+def getstats(sort):
+    # years = [2016]
+    # weeks = [1, 2, 3]
+    years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+    weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
-# nflgame.combine(nflgame.games(2016)).csv('season2010.csv')
+    yearstatline = []
 
-# sys.stdout.write(str(p.player.player_id) + ',' + str(p.player.name) + ',' + str(p.team) + ',' + str(week) + ','
-    # + str(p.home) + ',' + str(p.player.position) + '*')
-# statLine = (str(p.player.player_id) + ',' + str(p.player.name) + ',' + str(p.team) + ',' + str(week) + ','
-    # + str(p.home) + ',' + str(p.player.position) + '*')
+    for year in years:
+        print year
 
-# sys.stdout.write(str(p.passing_att) + ',' + str(p.passing_cmp) + ',' + str(p.passing_yds) + ',' + str(p.passing_int)
-    # + ',' + str(p.passing_tds) + ',' + str(p.twopta) + ',' + str(p.twoptm) + ',')
-# statLine += (str(p.passing_att) + ',' + str(p.passing_cmp) + ',' + str(p.passing_yds) + ',' + str(p.passing_int)
-    # + ',' + str(p.passing_tds) + ',' + str(p.twopta) + ',' + str(p.twoptm) + ',')
+        for week in weeks:
+            print week
 
-# sys.stdout.write(str(p.receiving_tar) + ',' + str(p.receiving_rec) + ',' + str(p.receiving_yds) + ','
-    # + str(p.receiving_yac_yds) + ',' + str(p.receiving_tds) + ',' + str(p.twoptm) + ',')
-# statLine += (str(p.receiving_tar) + ',' + str(p.receiving_rec) + ',' + str(p.receiving_yds) + ','
-    # + str(p.receiving_yac_yds) + ',' + str(p.receiving_tds) + ',' + str(p.twoptm) + ',')
+            game = nflgame.games(year, week)
+            players = nflgame.combine_play_stats(game)
 
-# sys.stdout.write(str(p.rushing_att) + ',' + str(p.rushing_yds) + ',' + str(p.rushing_rac_yds) + ','
-    # + str(p.rushing_tds) + ',' + str(p.twoptm) + ',')
-# statLine += (str(p.rushing_att) + ',' + str(p.rushing_yds) + ',' + str(p.rushing_rac_yds) + ','
-    # + str(p.rushing_tds) + ',' + str(p.twoptm) + ',')
+            for p in players:
+                if p.player is not None:
+                    # General info
+                    playerinfo = [p.player.player_id, p.player.name]
 
-# print(str(p.fumbles_tot) + ',' + str(p.fumbles_lost))
-# statLine += (str(p.fumbles_tot) + ',' + str(p.fumbles_lost))
+                    weeklystatline = []
+
+                    # Player Weekly Info
+                    playerweekinfo = [p.team, p.player.position, year, week, p.home]
+
+                    # Passing info
+                    playerpassing = [p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds,
+                                     p.twopta, p.twoptm]
+
+                    # Receiving info
+                    playerreceiving = [p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds,
+                                       p.receiving_tds, p.twoptm]
+
+                    # Rushing info
+                    playerrushing = [p.rushing_att, p.rushing_yds, p.rushing_rac_yds, p.rushing_tds, p.twoptm]
+
+                    # Misc. info
+                    playermisc = [p.fumbles_tot, p.fumbles_lost]
+
+                    weeklystatline.append([playerweekinfo, playerpassing, playerreceiving, playerrushing, playermisc])
+                    playerstatline = [playerinfo, weeklystatline]
+                    yearstatline.append(playerstatline)
+
+                else:
+                    print str("Could not find info for ") + p.name
+
+    if sort:
+        yearstatline.sort()
+
+    return yearstatline
+
+
+def groupstats(yearstatline):
+    mergedindex = 0
+    mergedlist = [yearstatline[0]]
+
+    for statline in range(1, len(yearstatline)):
+        temp = mergedlist[mergedindex][0]
+
+        if yearstatline[statline][0] == temp:
+            mergedlist[mergedindex].extend(yearstatline[statline][1])
+        else:
+            mergedindex += 1
+            mergedlist.append(yearstatline[statline])
+
+    return mergedlist
+
+
+def outputtofile(file, data):
+    f = open(file, 'w')
+
+    for statline in data:
+        f.write("%s\n" % statline)
+
+    return
+
+
+def outputtostd(data):
+    for statline in data:
+        print statline
+
+    return
+
+yearStatLine = getstats(True)
+mergedYearStatLine = groupstats(yearStatLine)
+
+outputtofile('C:\Users\sshah\Documents\FFStats\RawData.txt', yearStatLine)
+outputtofile('C:\Users\sshah\Documents\FFStats\GroupedData.txt', mergedYearStatLine)
+
+outputtostd(mergedYearStatLine)
