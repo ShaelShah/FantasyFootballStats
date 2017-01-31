@@ -1,5 +1,11 @@
 import nflgame
-import sys
+from Players import Player
+from Players import WeekInfo
+from Players import Stats
+from Players import PassingStats
+from Players import RushingStats
+from Players import ReceivingStats
+from Players import MiscStats
 
 
 def getstats(sort):
@@ -24,8 +30,6 @@ def getstats(sort):
                     # General info
                     playerinfo = [p.player.player_id, p.player.name]
 
-                    weeklystatline = []
-
                     # Player Weekly Info
                     playerweekinfo = [p.team, p.player.position, year, week, p.home]
 
@@ -43,8 +47,9 @@ def getstats(sort):
                     # Misc. info
                     playermisc = [p.fumbles_tot, p.fumbles_lost]
 
-                    weeklystatline.append([playerweekinfo, playerpassing, playerreceiving, playerrushing, playermisc])
+                    weeklystatline = [playerweekinfo, playerpassing, playerreceiving, playerrushing, playermisc]
                     playerstatline = [playerinfo, weeklystatline]
+
                     yearstatline.append(playerstatline)
 
                 else:
@@ -64,7 +69,7 @@ def groupstats(yearstatline):
         temp = mergedlist[mergedindex][0]
 
         if yearstatline[statline][0] == temp:
-            mergedlist[mergedindex].extend(yearstatline[statline][1])
+            mergedlist[mergedindex].append(yearstatline[statline][1])
         else:
             mergedindex += 1
             mergedlist.append(yearstatline[statline])
@@ -72,11 +77,11 @@ def groupstats(yearstatline):
     return mergedlist
 
 
-def outputtofile(file, data):
-    f = open(file, 'w')
+def outputtofile(f, data):
+    outputfile = open(f, 'w')
 
     for statline in data:
-        f.write("%s\n" % statline)
+        outputfile.write("%s\n" % statline)
 
     return
 
@@ -87,10 +92,43 @@ def outputtostd(data):
 
     return
 
+
+def listtoobj(mergedlist):
+
+    objlist = []
+
+    for player in mergedlist:
+        p = Player(player[0][0], player[0][1])
+
+        for w in range(1, len(player)):
+            winfo = WeekInfo(player[w][0][0], player[w][0][1], player[w][0][2], player[w][0][3], player[w][0][4])
+            pstats = PassingStats(player[w][1][0], player[w][1][1], player[w][1][2], player[w][1][3], player[w][1][4],
+                                  player[w][1][5], player[w][1][6])
+            recstats = ReceivingStats(player[w][2][0], player[w][2][1], player[w][2][2], player[w][2][3],
+                                      player[w][2][4], player[w][2][5])
+            rushstats = RushingStats(player[w][3][0], player[w][3][1], player[w][3][2], player[w][3][3],
+                                     player[w][3][4])
+            mstats = MiscStats(player[w][4][0], player[w][4][1])
+
+            p.addweeklystatline([winfo, pstats, recstats, rushstats, mstats])
+
+        objlist.append(p)
+
+    return objlist
+
+
 yearStatLine = getstats(True)
 mergedYearStatLine = groupstats(yearStatLine)
 
 outputtofile('C:\Users\sshah\Documents\FFStats\RawData.txt', yearStatLine)
 outputtofile('C:\Users\sshah\Documents\FFStats\GroupedData.txt', mergedYearStatLine)
 
+playerObjList = listtoobj(mergedYearStatLine)
+
+# for player in playerObjList:
+#     player.printstats()
+
 outputtostd(mergedYearStatLine)
+# print yearStatLine
+# print mergedYearStatLine
+# print playerObjList
