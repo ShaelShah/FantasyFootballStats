@@ -8,11 +8,12 @@ from Players import ReceivingStats
 from Players import MiscStats
 
 
-def getstats(sort):
-    # years = [2016]
-    # weeks = [1, 2, 3]
-    years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
-    weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+def getstats():
+    years = [2016]
+    weeks = [1, 2, 3]
+    # weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+    # years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+    # weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
     yearstatline = []
 
@@ -34,12 +35,10 @@ def getstats(sort):
                     playerweekinfo = [p.team, p.player.position, year, week, p.home]
 
                     # Passing info
-                    playerpassing = [p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds,
-                                     p.twopta, p.twoptm]
+                    playerpassing = [p.passing_att, p.passing_cmp, p.passing_yds, p.passing_int, p.passing_tds, p.twopta, p.twoptm]
 
                     # Receiving info
-                    playerreceiving = [p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds,
-                                       p.receiving_tds, p.twoptm]
+                    playerreceiving = [p.receiving_tar, p.receiving_rec, p.receiving_yds, p.receiving_yac_yds, p.receiving_tds, p.twoptm]
 
                     # Rushing info
                     playerrushing = [p.rushing_att, p.rushing_yds, p.rushing_rac_yds, p.rushing_tds, p.twoptm]
@@ -50,29 +49,30 @@ def getstats(sort):
                     weeklystatline = [playerweekinfo, playerpassing, playerreceiving, playerrushing, playermisc]
                     playerstatline = [playerinfo, weeklystatline]
 
+                    # print playerstatline
+
                     yearstatline.append(playerstatline)
 
                 else:
                     print str("Could not find info for ") + p.name
 
-    if sort:
-        yearstatline.sort()
+    # yearstatline.sort()
 
     return yearstatline
 
 
-def groupstats(yearstatline):
+def groupstats(data):
     mergedindex = 0
-    mergedlist = [yearstatline[0]]
+    mergedlist = [data[0]]
 
-    for statline in range(1, len(yearstatline)):
+    for statline in range(1, len(data)):
         temp = mergedlist[mergedindex][0]
 
-        if yearstatline[statline][0] == temp:
-            mergedlist[mergedindex].append(yearstatline[statline][1])
+        if data[statline][0] == temp:
+            mergedlist[mergedindex].append(data[statline][1])
         else:
             mergedindex += 1
-            mergedlist.append(yearstatline[statline])
+            mergedlist.append(data[statline])
 
     return mergedlist
 
@@ -93,21 +93,18 @@ def outputtostd(data):
     return
 
 
-def listtoobj(mergedlist):
+def listtoobj(data):
 
     objlist = []
 
-    for player in mergedlist:
+    for player in data:
         p = Player(player[0][0], player[0][1])
 
         for w in range(1, len(player)):
             winfo = WeekInfo(player[w][0][0], player[w][0][1], player[w][0][2], player[w][0][3], player[w][0][4])
-            pstats = PassingStats(player[w][1][0], player[w][1][1], player[w][1][2], player[w][1][3], player[w][1][4],
-                                  player[w][1][5], player[w][1][6])
-            recstats = ReceivingStats(player[w][2][0], player[w][2][1], player[w][2][2], player[w][2][3],
-                                      player[w][2][4], player[w][2][5])
-            rushstats = RushingStats(player[w][3][0], player[w][3][1], player[w][3][2], player[w][3][3],
-                                     player[w][3][4])
+            pstats = PassingStats(player[w][1][0], player[w][1][1], player[w][1][2], player[w][1][3], player[w][1][4], player[w][1][5], player[w][1][6])
+            recstats = ReceivingStats(player[w][2][0], player[w][2][1], player[w][2][2], player[w][2][3], player[w][2][4], player[w][2][5])
+            rushstats = RushingStats(player[w][3][0], player[w][3][1], player[w][3][2], player[w][3][3], player[w][3][4])
             mstats = MiscStats(player[w][4][0], player[w][4][1])
 
             p.addweeklystatline([winfo, pstats, recstats, rushstats, mstats])
@@ -117,7 +114,7 @@ def listtoobj(mergedlist):
     return objlist
 
 
-yearStatLine = getstats(True)
+yearStatLine = getstats()
 mergedYearStatLine = groupstats(yearStatLine)
 
 outputtofile('C:\Users\sshah\Documents\FFStats\RawData.txt', yearStatLine)
@@ -128,7 +125,7 @@ playerObjList = listtoobj(mergedYearStatLine)
 # for player in playerObjList:
 #     player.printstats()
 
-outputtostd(mergedYearStatLine)
+# outputtostd(mergedYearStatLine)
 # print yearStatLine
 # print mergedYearStatLine
 # print playerObjList
