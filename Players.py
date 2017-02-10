@@ -13,25 +13,19 @@ class Player:
     def addweeklystatline(self, statline):
         self.weeklyStats.append(statline)
 
-    def printstats(self):
-        print self.id
-        print self.name
+    def getinfo(self):
+        return self.id + str(": ") + self.name
 
+    def getstats(self):
         for week in self.weeklyStats:
             for statline in week:
-                print statline.printstatline()
+                return statline.printstatline()
+
+    def gettotalweeks(self):
+        return len(self.weeklyStats)
 
 
-class Stats:
-
-    def __init__(self):
-        print "Parent"
-
-    def printstatline(self):
-        print "I printed stats"
-
-
-class WeekInfo(Stats):
+class WeekInfo:
 
     team = ""
     position = ""
@@ -46,11 +40,11 @@ class WeekInfo(Stats):
         self.week = week
         self.home = home
 
-    def printstatline(self):
-        print "week info printstatline"
+    def getstatline(self):
+        return "week info printstatline"
 
 
-class PassingStats(Stats):
+class PassingStats:
 
     passingAttemps = 0
     passingCompletions = 0
@@ -70,11 +64,11 @@ class PassingStats(Stats):
         self.passingTwoPts = passingtwopts
         self.passingTwoPtAtts = passingtwoptatts
 
-    def printstatline(self):
-        print "passing stats printstatline"
+    def getstatline(self):
+        return "passing stats printstatline"
 
 
-class ReceivingStats(Stats):
+class ReceivingStats:
 
     receivingTargets = 0
     receivingReceptions = 0
@@ -92,11 +86,11 @@ class ReceivingStats(Stats):
         self.receivingTDs = receivingtds
         self.receivingTwoPts = receivingtwopts
 
-    def printstatline(self):
-        print "receiving stats printstatline"
+    def getstatline(self):
+        return "receiving stats printstatline"
 
 
-class RushingStats(Stats):
+class RushingStats:
 
     rushingAttempts = 0
     rushingYards = 0
@@ -111,11 +105,11 @@ class RushingStats(Stats):
         self.rushingTDs = rushingtds
         self.rushingTwoPts = rushingtwopts
 
-    def printstatline(self):
-        print "rushing stats printstatline"
+    def getstatline(self):
+        return "rushing stats printstatline"
 
 
-class MiscStats(Stats):
+class MiscStats:
 
     fumbles = 0
     fumblesLost = 0
@@ -124,6 +118,6 @@ class MiscStats(Stats):
         self.fumbles = fumbles
         self.fumblesLost = fumbleslost
 
-    def printstatline(self):
-        print "misc stats printstatline"
+    def getstatline(self):
+        return "misc stats printstatline"
 

@@ -1,7 +1,8 @@
 import nflgame
+import pickle
+
 from Players import Player
 from Players import WeekInfo
-from Players import Stats
 from Players import PassingStats
 from Players import RushingStats
 from Players import ReceivingStats
@@ -49,15 +50,12 @@ def getstats():
                     weeklystatline = [playerweekinfo, playerpassing, playerreceiving, playerrushing, playermisc]
                     playerstatline = [playerinfo, weeklystatline]
 
-                    # print playerstatline
-
                     yearstatline.append(playerstatline)
 
                 else:
                     print str("Could not find info for ") + p.name
 
-    # yearstatline.sort()
-
+    yearstatline.sort()
     return yearstatline
 
 
@@ -82,6 +80,8 @@ def outputtofile(f, data):
 
     for statline in data:
         outputfile.write("%s\n" % statline)
+
+    outputfile.close()
 
     return
 
@@ -114,18 +114,37 @@ def listtoobj(data):
     return objlist
 
 
-yearStatLine = getstats()
-mergedYearStatLine = groupstats(yearStatLine)
+def pickledata(f, data):
+    pickleoutput = open(f, 'wb')
+    pickle.dump(data, pickleoutput)
+    pickleoutput.close()
 
-outputtofile('C:\Users\sshah\Documents\FFStats\RawData.txt', yearStatLine)
-outputtofile('C:\Users\sshah\Documents\FFStats\GroupedData.txt', mergedYearStatLine)
 
-playerObjList = listtoobj(mergedYearStatLine)
+def unpickledata(f):
+    pickleinput = open(f, 'rb')
+    return pickle.load(pickleinput)
 
-# for player in playerObjList:
-#     player.printstats()
 
-# outputtostd(mergedYearStatLine)
-# print yearStatLine
-# print mergedYearStatLine
-# print playerObjList
+def updatestats(outfile, outstd, outpickle):
+    yearstatline = getstats()
+    mergedyearstatline = groupstats(yearstatline)
+
+    if outfile:
+        outputtofile('C:\Users\Shael\Documents\Programming\Python\FantasyFootballStats\FantasyFootballStats\RawData.txt', yearstatline)
+        outputtofile('C:\Users\Shael\Documents\Programming\Python\FantasyFootballStats\FantasyFootballStats\GroupedData.txt', mergedyearstatline)
+
+    if outstd:
+        outputtostd(yearstatline)
+        outputtostd(mergedyearstatline)
+
+    playerobjlist = listtoobj(mergedyearstatline)
+    unpickledplayerobjlist = unpickledata('C:\Users\Shael\Documents\Programming\Python\FantasyFootballStats\FantasyFootballStats\data.pickle')
+
+    if outpickle:
+        pickledata('C:\Users\Shael\Documents\Programming\Python\FantasyFootballStats\FantasyFootballStats\data.pickle', playerobjlist)
+
+    return unpickledplayerobjlist
+
+
+def getpickledata():
+    return unpickledata('C:\Users\Shael\Documents\Programming\Python\FantasyFootballStats\FantasyFootballStats\data.pickle')
