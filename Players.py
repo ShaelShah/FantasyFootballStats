@@ -16,13 +16,20 @@ class Player:
     def getinfo(self):
         return self.id + str(": ") + self.name
 
-    def getstats(self):
-        for week in self.weeklyStats:
-            for statline in week:
-                return statline.printstatline()
+    def getweeklystats(self):
+        return self.weeklyStats
+
+    # def getstats(self):
+    #     for week in self.weeklyStats:
+    #         print len(week)
+    #         for statline in week:
+    #             return statline.getstatline()
 
     def gettotalweeks(self):
         return len(self.weeklyStats)
+
+    def printcsv(self):
+        return str(self.id) + "," + self.name
 
 
 class WeekInfo:
@@ -41,7 +48,10 @@ class WeekInfo:
         self.home = home
 
     def getstatline(self):
-        return "week info printstatline"
+        return [self.team, self.position, self.year, self.week, self.home]
+
+    def printcsv(self):
+        return self.team + "," + self.position + "," + str(self.year) + "," + str(self.week) + "," + str(self.home)
 
 
 class PassingStats:
@@ -65,7 +75,10 @@ class PassingStats:
         self.passingTwoPtAtts = passingtwoptatts
 
     def getstatline(self):
-        return "passing stats printstatline"
+        return [self.passingAttemps, self.passingCompletions, self.passingYards, self.passingInts, self.passingTDs, self.passingTwoPts, self.passingTwoPtAtts]
+
+    def printcsv(self):
+        return str(self.passingAttemps) + "," + str(self.passingCompletions) + "," + str(self.passingYards) + "," + str(self.passingInts) + "," + str(self.passingTDs) + "," + str(self.passingTwoPts) + "," + str(self.passingTwoPtAtts)
 
 
 class ReceivingStats:
@@ -87,7 +100,10 @@ class ReceivingStats:
         self.receivingTwoPts = receivingtwopts
 
     def getstatline(self):
-        return "receiving stats printstatline"
+        return [self.receivingTargets, self.receivingReceptions, self.receivingYards, self.receivingYardsAfterCatch, self.receivingTDs, self.receivingTwoPts]
+
+    def printcsv(self):
+        return str(self.receivingTargets) + "," + str(self.receivingReceptions) + "," + str(self.receivingYards) + "," + str(self.receivingYardsAfterCatch) + "," + str(self.receivingTDs) + "," + str(self.receivingTwoPts)
 
 
 class RushingStats:
@@ -106,7 +122,10 @@ class RushingStats:
         self.rushingTwoPts = rushingtwopts
 
     def getstatline(self):
-        return "rushing stats printstatline"
+        return [self.rushingAttempts, self.rushingYards, self.rushingYardsAfterContact, self.rushingTDs, self.rushingTwoPts]
+
+    def printcsv(self):
+        return str(self.rushingAttempts) + "," + str(self.rushingYards) + "," + str(self.rushingYardsAfterContact) + "," + str(self.rushingTDs) + "," + str(self.rushingTwoPts)
 
 
 class MiscStats:
@@ -119,5 +138,9 @@ class MiscStats:
         self.fumblesLost = fumbleslost
 
     def getstatline(self):
-        return "misc stats printstatline"
+        return [self.fumbles, self.fumblesLost]
+
+    def printcsv(self):
+        return str(self.fumbles) + "," + str(self.fumblesLost)
+
 

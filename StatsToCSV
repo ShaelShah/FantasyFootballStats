@@ -1,0 +1,8 @@
+import GetStats
+
+GetStats.updatestats(0, 0, 1, 0)
+# playerlistdata = GetStats.getpickledata()
+
+# for player in playerlistdata:
+#     print player.getinfo() + " : \t\t\t\t" + str(len(player.getweeklystats()))
+
