@@ -1,4 +1,5 @@
 import nflgame
+import nflgame.update_players
 import pickle
 import sys
 
@@ -9,18 +10,25 @@ from Players import RushingStats
 from Players import ReceivingStats
 from Players import MiscStats
 
+# Linux files
+# rawdatafile = "/home/shael/Fantasy Football Stats/RawData.txt"
+# groupeddatafile = "/home/shael/Fantasy Football Stats/GroupedData.txt"
+# csvfile = "/home/shael/Fantasy Football Stats/StatsCSV.csv"
+# pickledatafile = "/home/shael/Fantasy Football Stats/pickle.data"
 
-rawdatafile = "/home/shael/Fantasy Football Stats/RawData.txt"
-groupeddatafile = "/home/shael/Fantasy Football Stats/GroupedData.txt"
-csvfile = "/home/shael/Fantasy Football Stats/StatsCSV.csv"
-pickledatafile = "/home/shael/Fantasy Football Stats/pickle.data"
+# Windows files
+rawdatafile = "C:\Users\sshah\Desktop\FF\Data\\rawData.txt"
+groupeddatafile = "C:\Users\sshah\Desktop\FF\Data\\groupedData.txt"
+csvfile = "C:\Users\sshah\Desktop\FF\Data\\rawData.csv"
+pickledatafile = "C:\Users\sshah\Desktop\FF\Data\\pickle.data"
 
 
 def getstats():
-    # years = [2016]
-    # weeks = [1, 2]
-    weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-    years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+
+    # weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+    # years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+    weeks = [1]
+    years = [2017]
 
     yearstatline = []
     missedplayers = []
@@ -185,7 +193,10 @@ def unpickledata(f):
     return pickle.load(pickleinput)
 
 
-def updatestats(outfile, outstd, outcsv, outputcsvfile, outpickle):
+def updatestats(updateplayers, outfile, outstd, outcsv, outputcsvfile, outpickle):
+    if updateplayers:
+        nflgame.update_players.run()
+
     yearstatline = getstats()
     mergedyearstatline = groupstats(yearstatline)
 
@@ -215,6 +226,6 @@ def getpickledata():
     return unpickledata(pickledatafile)
 
 
-updatestats(0, 0, 0, 1, 0)
+updatestats(0, 0, 0, 0, 1, 0)
 
 
