@@ -71,14 +71,14 @@ class PassingStats:
         self.passingYards = passingyards
         self.passingInts = passingints
         self.passingTDs = passingtds
-        self.passingTwoPts = passingtwopts
         self.passingTwoPtAtts = passingtwoptatts
+        self.passingTwoPts = passingtwopts
 
     def getstatline(self):
-        return [self.passingAttemps, self.passingCompletions, self.passingYards, self.passingInts, self.passingTDs, self.passingTwoPts, self.passingTwoPtAtts]
+        return [self.passingAttemps, self.passingCompletions, self.passingYards, self.passingInts, self.passingTDs, self.passingTwoPtAtts, self.passingTwoPts]
 
     def printcsv(self):
-        return str(self.passingAttemps) + "," + str(self.passingCompletions) + "," + str(self.passingYards) + "," + str(self.passingInts) + "," + str(self.passingTDs) + "," + str(self.passingTwoPts) + "," + str(self.passingTwoPtAtts)
+        return str(self.passingAttemps) + "," + str(self.passingCompletions) + "," + str(self.passingYards) + "," + str(self.passingInts) + "," + str(self.passingTDs) + "," + str(self.passingTwoPtAtts) + "," + str(self.passingTwoPts)
 
 
 class ReceivingStats:

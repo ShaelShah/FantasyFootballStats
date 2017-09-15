@@ -17,9 +17,9 @@ from Players import MiscStats
 # pickledatafile = "/home/shael/Fantasy Football Stats/pickle.data"
 
 # Windows files
-rawdatafile = "C:\Users\sshah\Desktop\FF\Data\\rawData.txt"
+rawdatafile = "C:\Users\sshah\Desktop\FF\Data\\rawData2017.txt"
 groupeddatafile = "C:\Users\sshah\Desktop\FF\Data\\groupedData.txt"
-csvfile = "C:\Users\sshah\Desktop\FF\Data\\rawData.csv"
+csvfile = "C:\Users\sshah\Desktop\FF\Data\\rawData2017.csv"
 pickledatafile = "C:\Users\sshah\Desktop\FF\Data\\pickle.data"
 
 
@@ -27,7 +27,7 @@ def getstats():
 
     # weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
     # years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
-    weeks = [1]
+    weeks = [1, 2]
     years = [2017]
 
     yearstatline = []
